@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
 
     private Dictionary<ItemType, ItemData> itemDatas = new Dictionary<ItemType, ItemData>();
 
-    private InventoryData backpack;
+    public InventoryData backpack;
 
     private void Awake()
     {
