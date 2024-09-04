@@ -16,11 +16,11 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: d4d3a7dd45635504eadb32ced8cba511, type: 2}
     count: 99
   - item: {fileID: 11400000, guid: bd013f208e64ec749a2ff5a10449988f, type: 2}
-    count: 3
+    count: 4
   - item: {fileID: 11400000, guid: d4d3a7dd45635504eadb32ced8cba511, type: 2}
+    count: 3
+  - item: {fileID: 11400000, guid: bd013f208e64ec749a2ff5a10449988f, type: 2}
     count: 1
-  - item: {fileID: 0}
-    count: 0
   - item: {fileID: 0}
     count: 0
   - item: {fileID: 0}

@@ -10,7 +10,22 @@ public class Slot : MonoBehaviour
     public Image iconImage;
     public TextMeshProUGUI countText;
 
+    private SlotData data;
+
     public void SetData(SlotData data)
+    {
+        this.data = data;
+        data.AddListener(OnDateChagne);
+
+        UpdateUI();
+    }
+
+    private void OnDateChagne()
+    {
+        UpdateUI();
+    }
+
+    private void UpdateUI()
     {
         if (data.item == null || data.count == 0)
         {
