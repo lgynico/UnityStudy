@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IPointerClickHandler
 {
     public int index;
     public Image iconImage;
     public TextMeshProUGUI countText;
 
     private SlotData data;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ItemMoveHandler.Instance.ShowIcon(data);
+    }
 
     public void SetData(SlotData data)
     {

@@ -32,4 +32,11 @@ public class SlotData
     {
         this.onChange = onChange;
     }
+
+    public void Clear()
+    {
+        item = null;
+        count = 0;
+        onChange?.Invoke();
+    }
 }
