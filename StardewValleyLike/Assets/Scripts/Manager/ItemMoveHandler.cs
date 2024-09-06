@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,8 +9,9 @@ using UnityEngine.UI;
 public class ItemMoveHandler : MonoSingleton<ItemMoveHandler>
 {
     private Image movingIcon;
-    private SlotData selectedItem;
+    private Slot selectedSlot;
     private Player player;
+    private bool isCtrlPress;
 
     protected override void Awake()
     {
@@ -23,6 +25,9 @@ public class ItemMoveHandler : MonoSingleton<ItemMoveHandler>
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftControl)) { isCtrlPress = true; }
+        else if (Input.GetKeyUp(KeyCode.LeftControl)) { isCtrlPress = false; }
+
         if (movingIcon.enabled)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -35,26 +40,30 @@ public class ItemMoveHandler : MonoSingleton<ItemMoveHandler>
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                DropItem();
-                selectedItem.Clear();
-                Clear();
-                HideIcon();
+                if (selectedSlot == null) { return; }
+                var slotData = selectedSlot.GetData();
+                DropItem(slotData.item.prefab, isCtrlPress ? 1 : slotData.count);
+                if (isCtrlPress)
+                {
+                    slotData.Decrease();
+                }
+                if (slotData.count == 0)
+                {
+                    selectedSlot.Clear();
+                    HideIcon();
+                    Clear();
+                }
             }
         }
     }
 
-    private void DropItem()
+    private void DropItem(GameObject prefab, int count)
     {
-        if (selectedItem == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < selectedItem.count; i++)
+        for (int i = 0; i < count; i++)
         {
             Vector2 direction = Random.insideUnitCircle.normalized * 1.2f;
             Vector3 position = player.transform.position + (Vector3)direction;
-            Instantiate(selectedItem.item.prefab, position, Quaternion.identity);
+            Instantiate(prefab, position, Quaternion.identity).GetComponent<Rigidbody2D>().velocity = direction * 0.15f;
         }
     }
 
@@ -63,15 +72,16 @@ public class ItemMoveHandler : MonoSingleton<ItemMoveHandler>
         movingIcon.enabled = false;
     }
 
-    public void ShowIcon(SlotData data)
+    public void ShowIcon(Slot slot)
     {
-        selectedItem = data;
-        movingIcon.sprite = data.item.sprite;
+        if (slot.GetData().item == null) { return; }
+        selectedSlot = slot;
+        movingIcon.sprite = slot.GetData().item.sprite;
         movingIcon.enabled = true;
     }
 
     public void Clear()
     {
-        selectedItem = null;
+        selectedSlot = null;
     }
 }

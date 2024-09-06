@@ -15,7 +15,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        ItemMoveHandler.Instance.ShowIcon(data);
+        ItemMoveHandler.Instance.ShowIcon(this);
     }
 
     public void SetData(SlotData data)
@@ -24,6 +24,11 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         data.AddListener(OnDateChagne);
 
         UpdateUI();
+    }
+
+    public SlotData GetData()
+    {
+        return data;
     }
 
     private void OnDateChagne()
@@ -46,5 +51,11 @@ public class Slot : MonoBehaviour, IPointerClickHandler
             countText.enabled = true;
             countText.text = "" + data.count;
         }
+    }
+
+    public void Clear()
+    {
+        data.Clear();
+        UpdateUI();
     }
 }

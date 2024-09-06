@@ -21,6 +21,19 @@ public class SlotData
         onChange?.Invoke();
     }
 
+    public void Decrease()
+    {
+        count--;
+        if (count == 0)
+        {
+            Clear();
+        }
+        else
+        {
+            onChange?.Invoke();
+        }
+    }
+
     public void AddItem(ItemData item)
     {
         this.item = item;
